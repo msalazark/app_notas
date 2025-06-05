@@ -31,10 +31,17 @@ st.title("Consulta de Nota de participación")
 
 # --- Dropdown dependientes ---
 curso_sel = st.selectbox("Curso", sorted(df["curso"].unique()))
-nrc_sel   = st.selectbox(
-    "NRC",
-    sorted(df.loc[df["curso"] == curso_sel, "nrc"].unique())
+nrcs = (
+    df.loc[df["curso"] == curso_sel, "nrc"]
+      .astype(str)        # evita mezcla int/str
+      .unique()
 )
+nrc_sel = st.selectbox(
+    label="NRC",
+    options=sorted(nrcs),
+    key="sel_nrc"
+)
+
 codigo = st.text_input("Código del alumno")
 
 if st.button("Obtener nota"):
